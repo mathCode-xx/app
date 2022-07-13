@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
  * @author 徐鑫
  */
 @Mapper
-public interface UserMapper {
+public interface IUserMapper {
     /***
      * 根据学号获取用户信息
      * @param id 学号
@@ -28,4 +28,12 @@ public interface UserMapper {
             "values(#{id}, #{name}, #{password}, #{sex}, " +
             "#{college}, #{major});")
     int insertUser(User user);
+
+    /**
+     * 根据学号查询账户
+     * @param id 需要查询的学号
+     * @return 返回的账户
+     */
+    @Select("select * from student where id = #{id}")
+    User getById(String id);
 }

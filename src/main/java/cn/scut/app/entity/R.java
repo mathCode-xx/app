@@ -31,6 +31,12 @@ public class R {
         m.setStatusCode(200);
         return m;
     }
+    static public R success(String message) {
+        R m = new R();
+        m.setStatusCode(200);
+        m.setMessage(message);
+        return m;
+    }
     static public R fail() {
         R r = new R();
         r.setMessage("请求失败");

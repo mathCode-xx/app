@@ -1,7 +1,7 @@
 package cn.scut.app.service;
 
 import cn.scut.app.entity.User;
-import cn.scut.app.mapper.UserMapper;
+import cn.scut.app.mapper.IUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-public class UserServiceTest {
+public class IUserServiceTest {
     @Autowired
-    UserService userService;
+    IUserService IUserService;
     @Autowired
-    UserMapper userMapper;
+    IUserMapper userMapper;
 
     @Test
     void login() {
-        //log.info(userService.login("201930035227").toString());
+        //log.info(IUserService.login("201930035227").toString());
     }
 
     @Test
@@ -29,6 +29,6 @@ public class UserServiceTest {
         user.setCollege("数学学院");
         user.setMajor("信息与计算科学");
         user.setSex('男');
-        userService.register(user);
+        IUserService.register(user);
     }
 }

@@ -20,33 +20,33 @@ public class User {
     /**
      * 学号长度
      */
-    public static int ID_LENGTH = 12;
+    public static final int ID_LENGTH = 12;
     /**
      * 游客
      */
-    public static int TOURIST = 3;
+    public static final int TOURIST = 3;
     /**
      * 普通用户
      */
-    public static int NORMAL_USER = 2;
+    public static final int NORMAL_USER = 2;
     /**
      * 管理员
      */
-    public static int MANAGER = 1;
+    public static final int MANAGER = 1;
     /**
      * 系统管理员
      */
-    public static int SYSTEM_MANAGER = 0;
+    public static final int SYSTEM_MANAGER = 0;
     /**
      * 正常状态
      */
-    public static int NORMAL_STATUS = 0;
+    public static final int NORMAL_STATUS = 0;
     /**
      * 禁言状态
      */
-    public static int NO_SPEAK_STATUS = 1;
+    public static final int NO_SPEAK_STATUS = 1;
     /**
      * 封禁状态
      */
-    public static int BANNED_STATUS = 2;
+    public static final int BANNED_STATUS = 2;
 }

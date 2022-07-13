@@ -2,9 +2,10 @@ package cn.scut.app.controller;
 
 import cn.scut.app.entity.R;
 import cn.scut.app.entity.User;
-import cn.scut.app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.scut.app.service.IUserService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 用户控制层
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    UserService userService;
+    @Resource
+    private IUserService userService;
 
     @PostMapping("/login")
     public R login(@RequestBody User user){
