@@ -11,6 +11,9 @@ import cn.scut.app.service.ITopicService;
 import cn.scut.app.service.ITypeService;
 import cn.scut.app.util.CacheClient;
 import cn.scut.app.util.Constant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,6 @@ import static cn.scut.app.util.Constant.*;
 
 /**
  * 主贴业务实现
- *
  * @author 徐鑫
  */
 @Service
@@ -79,6 +81,7 @@ public class TopicServiceImpl implements ITopicService {
         }
         //将topic的数据补齐
         topic.setTime(LocalDateTime.now());
+        topic.setUpdateTime(LocalDateTime.now());
         topic.setId(IdUtil.getSnowflakeNextId());
         //向数据库中插入数据
         int count = topicMapper.insert(topic);
@@ -93,34 +96,33 @@ public class TopicServiceImpl implements ITopicService {
         //删除topic只能由发帖人和管理员删除
         int count = 0;
         int permission = checkUserId(topic, token);
-        if (permission == User.NORMAL_USER
-                || permission == User.MANAGER
-                || permission == User.SYSTEM_MANAGER) {
-            count = topicMapper.deleteById(topic.getId());
-        } else {
+        if (permission == -1 || permission == User.TOURIST) {
             return R.fail("没有删除该主贴的权限！");
         }
+        count = topicMapper.deleteById(topic.getId());
         if (count != 1) {
             return R.fail("主贴不存在！");
         }
+        //删除缓存
+        stringRedisTemplate.delete(TOPIC_ID_CACHE_KEY+topic);
+        stringRedisTemplate.delete(TOPIC_TYPE_CACHE_KEY+topic.getTypeId());
         return R.success("删除成功！");
     }
 
     @Override
     public R update(Topic topic, String token) {
         int permission = checkUserId(topic, token);
-        int count = 0;
-        if (permission == User.NORMAL_USER
-                || permission == User.MANAGER
-                || permission == User.SYSTEM_MANAGER) {
-            topic.setTime(LocalDateTime.now());
-            count = topicMapper.update(topic);
-        } else {
+        if (permission == -1 || permission == User.TOURIST) {
             return R.fail("没有更新该topic的权限");
         }
-        if (count != 1) {
+        //更新修改时间
+        topic.setTime(LocalDateTime.now());
+        if (topicMapper.update(topic) != 1) {
             return R.fail("更新失败！");
         }
+        //删除缓存
+        stringRedisTemplate.delete(TOPIC_ID_CACHE_KEY + topic.getId());
+        stringRedisTemplate.delete(TOPIC_TYPE_CACHE_KEY+topic.getTypeId());
         return R.success("更新成功！").addData("time", topic.getTime());
     }
 
@@ -151,5 +153,21 @@ public class TopicServiceImpl implements ITopicService {
             return R.fail("该类型并无topic");
         }
         return R.success().addData("topics", topics);
+    }
+
+    @Override
+    public R findByPage(Integer page, Integer pageSize) {
+
+        log.info("分页查询开始：第"  + page + "页，"+ pageSize + "个数据");
+        List<Topic> topicList = null;
+        try(Page<Object> objects = PageHelper.startPage(page, pageSize)) {
+            topicList = topicMapper.getAllTopic();
+        } catch (Exception e) {
+            return R.fail(e.getMessage());
+        }
+
+        PageInfo<Topic> pageInfo = new PageInfo<>(topicList);
+
+        return R.success().addData("info", pageInfo);
     }
 }

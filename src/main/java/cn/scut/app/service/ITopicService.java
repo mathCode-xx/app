@@ -45,4 +45,12 @@ public interface ITopicService {
      * @return 操作结果
      */
     R findByType(Long type);
+
+    /**
+     * 分页查询
+     * @param page 页码
+     * @param pageSize 页的大小
+     * @return 当前页数据
+     */
+    R findByPage(Integer page, Integer pageSize);
 }

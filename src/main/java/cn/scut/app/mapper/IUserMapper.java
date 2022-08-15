@@ -4,6 +4,7 @@ import cn.scut.app.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * User类和数据库的映射
@@ -24,9 +25,9 @@ public interface IUserMapper {
      * @param user 需要添加的账户
      * @return 返回所影响的行数
      */
-    @Insert("insert into student(id, name, password, sex, college, major) " +
+    @Insert("insert into student(id, name, password, sex, college, major, create_time, update_time) " +
             "values(#{id}, #{name}, #{password}, #{sex}, " +
-            "#{college}, #{major});")
+            "#{college}, #{major}, #{createTime}, #{updateTime});")
     int insertUser(User user);
 
     /**
@@ -36,4 +37,15 @@ public interface IUserMapper {
      */
     @Select("select * from student where id = #{id}")
     User getById(String id);
+
+    /**
+     * 更新用户信息
+     * @param user 最新状态
+     * @return 受影响的行数
+     */
+    @Update("<script>update student set " +
+            "<if test= \"password != null and password != ''\"> password = #{password}, </if> " +
+            "permission = #{permission}, score = #{score}, status = #{status}, update_time = #{updateTime}" +
+            "where id = #{id};</script>")
+    int update(User user);
 }

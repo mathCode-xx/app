@@ -35,6 +35,10 @@ public class CacheClient {
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value), time, unit);
     }
 
+    public Boolean delete(String key) {
+        return stringRedisTemplate.delete(key);
+    }
+
     /**
      * 设置逻辑时间的缓存
      * @param key redis中的key

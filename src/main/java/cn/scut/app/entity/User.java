@@ -2,6 +2,8 @@ package cn.scut.app.entity;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 用户实体类
  * @author 徐鑫
@@ -17,6 +19,8 @@ public class User {
     private String major;
     private int score;
     private int status;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
     /**
      * 学号长度
      */

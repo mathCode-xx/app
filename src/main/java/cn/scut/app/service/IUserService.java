@@ -24,8 +24,23 @@ public interface IUserService {
 
     /**
      * 根据用户名查询用户信息
-     * @param id 需要查询的用户名
-     * @return 查询到的用户信息
+     * @param id 需要查询的用户id
+     * @return 操作结果
      */
-    User getUserById(String id);
+    R getUserById(String id);
+
+    /**
+     * 更新user信息
+     * @param user 最新的user
+     * @param token 更新发起人持有的token
+     * @return 操作信息
+     */
+    R update(User user, String token);
+
+    /**
+     * 退出登录
+     * @param token 退出账号持有的令牌
+     * @return 操作信息
+     */
+    R quit(String token);
 }

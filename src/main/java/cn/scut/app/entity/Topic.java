@@ -27,4 +27,5 @@ public class Topic {
     private LocalDateTime time;
     private String userId;
     private int typeId;
+    private LocalDateTime updateTime;
 }

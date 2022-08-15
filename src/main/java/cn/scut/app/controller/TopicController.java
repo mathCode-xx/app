@@ -42,4 +42,10 @@ public class TopicController {
     public R findByType(@PathVariable Long type) {
         return topicService.findByType(type);
     }
+
+    @GetMapping("/page")
+    public R findByPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        return topicService.findByPage(pageNum, pageSize);
+    }
+
 }

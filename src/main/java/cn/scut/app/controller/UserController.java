@@ -32,4 +32,19 @@ public class UserController {
         }
         return userService.register(user);
     }
+
+    @GetMapping("/{id}")
+    public R findUserById(@PathVariable String id) {
+        return userService.getUserById(id);
+    }
+
+    @PutMapping
+    public R update(@RequestBody User user, @RequestHeader String token) {
+        return userService.update(user, token);
+    }
+
+    @PostMapping("/logout")
+    public R quit(String token) {
+        return userService.quit(token);
+    }
 }
