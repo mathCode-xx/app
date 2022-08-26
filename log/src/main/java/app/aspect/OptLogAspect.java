@@ -44,7 +44,7 @@ public class OptLogAspect {
     }
 
     /***
-     * 定义controller切入点拦截规则，拦截SysLog注解的方法
+     * 定义controller切入点拦截规则，拦截OptLog注解的方法
      */
     @Pointcut("@annotation(app.annotation.OptLog)")
     public void sysLogAspect() {

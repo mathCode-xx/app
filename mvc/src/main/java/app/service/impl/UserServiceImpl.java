@@ -1,12 +1,16 @@
 package app.service.impl;
 
+import app.asymmetry.AsymmetryKey;
 import app.cache.CacheClient;
 import app.context.UserHolder;
 import app.entity.R;
+import app.entity.Secret;
 import app.entity.User;
 import app.mapper.IUserMapper;
 import app.service.IUserService;
 import app.util.RedisConstant;
+import app.util.SecretManager;
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
@@ -38,6 +42,22 @@ public class UserServiceImpl implements IUserService {
 
     @Resource
     private CacheClient cacheClient;
+
+    @Override
+    public R initLogin(Secret secret) {
+        boolean contains = SecretManager.getInstance().isContains(secret);
+        if (contains) {
+            return R.success("客户端已经注册");
+        }
+        String clientSecret = secret.getClientSecret();
+        log.info(clientSecret);
+        byte[] decode = Base64.decode(clientSecret);
+        byte[] decrypt = AsymmetryKey.decrypt(decode);
+        String encode = Base64.encode(decrypt);
+        secret.setClientSecret(encode);
+        SecretManager.getInstance().putClient(secret);
+        return R.success("客户端注册成功");
+    }
 
     @Override
     public R login(User u) {

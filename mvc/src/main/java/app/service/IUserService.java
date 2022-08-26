@@ -1,6 +1,7 @@
 package app.service;
 
 import app.entity.R;
+import app.entity.Secret;
 import app.entity.User;
 
 import java.util.List;
@@ -10,6 +11,14 @@ import java.util.List;
  * @author 徐鑫
  */
 public interface IUserService {
+
+    /**
+     * 初始化登录，交换密钥
+     * @param secret
+     * @return
+     */
+    R initLogin(Secret secret);
+
     /**
      * 登录业务
      * @param user 前端发送过来的账户信息

@@ -1,9 +1,13 @@
 package app.controller;
 
 import app.annotation.OptLog;
+import app.asymmetry.AsymmetryKey;
 import app.entity.R;
+import app.entity.Secret;
 import app.entity.User;
 import app.service.IUserService;
+import cn.hutool.core.codec.Base64;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -15,9 +19,26 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
     @Resource
     private IUserService userService;
+
+    @GetMapping("/pub")
+    public R findPubKey() {
+        String encode = Base64.encode(AsymmetryKey.getPubKey());
+        log.info(encode);
+        return R.success().addData("pubKey", encode);
+    }
+
+    /**
+     * 用于交换密钥
+     * @return
+     */
+    @PostMapping("/init")
+    public R init(@RequestBody Secret secret) {
+        return userService.initLogin(secret);
+    }
 
     @PostMapping("/login")
     public R login(@RequestBody User user){

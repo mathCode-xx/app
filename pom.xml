@@ -10,6 +10,7 @@
         <module>core</module>
         <module>database</module>
         <module>redis</module>
+        <module>jwt</module>
     </modules>
 
     <parent>
@@ -29,6 +30,7 @@
         <hutool.version>5.8.5</hutool.version>
         <druid.version>1.2.11</druid.version>
         <pagehelper.version>1.4.3</pagehelper.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +50,12 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <!-- 特别注意版本问题 -->
                 <version>${pagehelper.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
